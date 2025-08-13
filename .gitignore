@@ -1,3 +1,4 @@
+.cache
 builddir
-subprojects/packagecache
-subprojects/googletest*
+subprojects/
+!subprojects/gtest.wrap
