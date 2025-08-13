@@ -8,12 +8,12 @@
 - [X] 3D Object scripting
 - [ ] 2D Object scripting
 - [ ] Transforms, extrusions
-- [ ] Direct binary stl generation
-- [ ] 
+- [ ] Direct binary STL generation
 
 ---
 
 ## Project Structure
+```
 ├── builddir/
 ├── include/
 │ └── scad/
@@ -31,6 +31,7 @@
 ├── meson.build
 ├── meson_options.txt
 └── README.md
+```
 
 - `include/scad/` — Public headers
 - `src/` — Library source and build rules
@@ -57,7 +58,7 @@ meson setup builddir
 meson compile -C builddir
 ```
 
-The resulting file should be `builddir/src/libscad.so.0.0.0`.
+The resulting file should be `builddir/src/libscad.so.1.0.0`.
 
 ---
 
