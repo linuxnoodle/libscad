@@ -1,0 +1,5 @@
+# meson_options.txt
+option('shared', type : 'boolean', value : true, description : 'Build shared library')
+option('static', type : 'boolean', value : false, description : 'Build static library')
+option('debug_build', type : 'boolean', value : false, description : 'Build with debug flags')
+option('enable_tests', type : 'boolean', value : true, description : 'Build tests')
