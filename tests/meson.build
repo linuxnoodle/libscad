@@ -15,4 +15,4 @@ e = executable('g',
   dependencies : [gtest_dep, gmock_dep, scad_dep],
 )
 
-test('gtest tests', e)
+test('gtest_scad', e)

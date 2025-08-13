@@ -14,7 +14,7 @@ typedef std::vector<Point2D> Path2D;
 class Object2D {
 public:
   virtual std::string generateCode() = 0; // -> openscad function call
-  virtual ~Object3D();
+  virtual ~Object2D();
   
   // TODO: add ways to modify these parameters
   float fn = 0;  // fixed number of fragments in 360 degrees. Values of 3 or more override fa and fs 

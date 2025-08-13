@@ -71,8 +71,8 @@ This should install the .so file to `/usr/lib` and the headers to `/usr/include`
 
 ---
 
-## Example Code
+## Tests
 
-```cpp
-
+```bash
+meson test -C build -v # Meson test doesn't show stdout by default
 ```
