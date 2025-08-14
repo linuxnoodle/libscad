@@ -1,19 +1,17 @@
 #include "scad/obj3d.h"
 
-Object3D::~Object3D() {}
-
 std::string Sphere3D::generateCode(){
-  return std::format("sphere($fn = {}, $fa = {}, $fs = {}, {})", fn, fa, fs,
+  return std::format("sphere($fn = {}, $fa = {}, $fs = {}, {});", fn, fa, fs,
       radius);
 }
 
 std::string Cube3D::generateCode(){
-  return std::format("cube($fn = {}, $fa = {}, $fs = {}, size = [{},{},{}], center = {})", fn, fa, fs,
+  return std::format("cube($fn = {}, $fa = {}, $fs = {}, size = [{},{},{}], center = {});", fn, fa, fs,
       width, depth, height, center);
 }
 
 std::string Cylinder3D::generateCode(){
-  return std::format("cylinder($fn = {}, $fa = {}, $fs = {}, h = {}, r1 = {}, r2 = {}, center = {})", fn, fa, fs,
+  return std::format("cylinder($fn = {}, $fa = {}, $fs = {}, h = {}, r1 = {}, r2 = {}, center = {});", fn, fa, fs,
       height, radius1, radius2, center);
 }
 
@@ -43,6 +41,6 @@ std::string Polyhedron3D::generateCode(){
   }
   facesFormat += "]";
 
-  return std::format("polyhedron($fn = {}, $fa = {}, $fs = {}, points = {}, faces = {}, convexity = {})", fn, fa, fs,
+  return std::format("polyhedron($fn = {}, $fa = {}, $fs = {}, points = {}, faces = {}, convexity = {});", fn, fa, fs,
       pointsFormat, facesFormat, convexity);
 }

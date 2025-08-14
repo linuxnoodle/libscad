@@ -6,7 +6,7 @@
 
 ## Features
 - [X] 3D Object scripting
-- [ ] 2D Object scripting
+- [X] 2D Object scripting
 - [ ] Transforms, extrusions
 - [ ] Direct binary STL generation
 
