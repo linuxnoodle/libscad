@@ -1,21 +1,21 @@
 #include "scad/obj3d.h"
 
-std::string Sphere3D::generateCode(){
+std::string Sphere3D::generateCode() {
   return std::format("sphere($fn = {}, $fa = {}, $fs = {}, {});", fn, fa, fs,
       radius);
 }
 
-std::string Cube3D::generateCode(){
+std::string Cube3D::generateCode() {
   return std::format("cube($fn = {}, $fa = {}, $fs = {}, size = [{},{},{}], center = {});", fn, fa, fs,
       width, depth, height, center);
 }
 
-std::string Cylinder3D::generateCode(){
+std::string Cylinder3D::generateCode() {
   return std::format("cylinder($fn = {}, $fa = {}, $fs = {}, h = {}, r1 = {}, r2 = {}, center = {});", fn, fa, fs,
       height, radius1, radius2, center);
 }
 
-std::string Polyhedron3D::generateCode(){
+std::string Polyhedron3D::generateCode() {
   std::string pointsFormat = "[";
   for (unsigned int i = 0; i < points.size(); ++i){
     pointsFormat += std::format("[{},{},{}]", points[i].x, points[i].y, points[i].z);

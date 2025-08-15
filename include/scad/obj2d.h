@@ -13,8 +13,11 @@ class Object2D : public Object {};
 
 class Circle2D : public Object2D {
 public:
-  Circle2D(float radius): radius(radius) {}
+  Circle2D(float radius = 1): radius(radius) {}
   std::string generateCode();
+  std::shared_ptr<Object> clone() const override {
+    return std::make_shared<Circle2D>(*this);
+  }
 
   float radius;
 };
@@ -22,19 +25,24 @@ public:
 class Square2D : public Object2D {
 public:
   Square2D(
-      float size,
-      bool center
+      float size = 1,
+      bool center = false
   ): width(size),
      height(size),
      center(center) {}
+  // I HATE AMBIGUOUS OVERLOADING
+  // HOLY HELL C++ JUST ADD NAMED PARAMETERS!!
   Square2D(
       float width,
       float height,
-      bool center
+      bool center = false
   ): width(width),
      height(height),
      center(center) {}
   std::string generateCode();
+  std::shared_ptr<Object> clone() const override {
+    return std::make_shared<Square2D>(*this);
+  }
 
   float width;
   float height;
@@ -45,13 +53,19 @@ class Polygon2D : public Object2D {
 public:
   Polygon2D(
       std::vector<Point2D> points,
-      std::vector<Path2D> paths
+      std::vector<Path2D> paths = {},
+      int convexity = 1
   ): points(points),
-     paths(paths) {}
+     paths(paths),
+     convexity(convexity) {}
   std::string generateCode();
+  std::shared_ptr<Object> clone() const override {
+        return std::make_shared<Polygon2D>(*this);
+    }
 
   std::vector<Point2D> points;
   std::vector<Path2D> paths;
+  int convexity;
 };
 
 class Text2D : public Object2D {
@@ -76,15 +90,18 @@ public:
      language(language),
      script(script) {}
   std::string generateCode();
+  std::shared_ptr<Object> clone() const override {
+      return std::make_shared<Text2D>(*this);
+  }
 
-    std::string text;
-    std::string font;
-    float size;
-    std::string halign;
-    std::string valign;
-    float spacing;
-    std::string direction;
-    std::string language;
-    std::string script;
+  std::string text;
+  std::string font;
+  float size;
+  std::string halign;
+  std::string valign;
+  float spacing;
+  std::string direction;
+  std::string language;
+  std::string script;
 };
 #endif

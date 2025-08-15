@@ -3,11 +3,13 @@ libname = 'scad'
 version = meson.project_version()
 
 sources = [
+  'scad.cpp',
   'obj2d.cpp',
   'obj3d.cpp',
 ]
 
 headers = [
+  'scad.h',
   'obj2d.h',
   'obj3d.h',
 ]

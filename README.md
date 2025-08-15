@@ -7,6 +7,7 @@
 ## Features
 - [X] 3D Object scripting
 - [X] 2D Object scripting
+- [X] Scene management
 - [ ] Transforms, extrusions
 - [ ] Direct binary STL generation
 
@@ -22,6 +23,7 @@
 │   └── scad.h
 ├── src/
 │ ├── meson.build
+│ ├── scad.cpp
 │ ├── obj2d.cpp
 │ ├── obj3d.cpp
 │ └── scad.cpp

@@ -186,13 +186,6 @@ TEST(Circle2DTest, CustomFsFaFn) {
     EXPECT_EQ(circle.generateCode(), "circle($fn = 60, $fa = 5, $fs = 1, r = 5);");
 }
 
-TEST(Circle2DTest, TrailingSemicolonCircle) {
-    Circle2D circle(1.0f);
-    std::string code = circle.generateCode();
-    ASSERT_FALSE(code.empty());
-    EXPECT_EQ(code.back(), ';');
-}
-
 // -----------------------------------------------------------------------------
 // Square2D Tests
 // -----------------------------------------------------------------------------
@@ -215,34 +208,19 @@ TEST(Square2DTest, ModifyDimensionsAndCenter) {
     EXPECT_EQ(square.generateCode(), "square($fn = 0, $fa = 12, $fs = 2, width = 15, height = 25, center = true);");
 }
 
-TEST(Square2DTest, TrailingSemicolonSquare) {
-    Square2D square(1.0f, 1.0f, false);
-    std::string code = square.generateCode();
-    ASSERT_FALSE(code.empty());
-    EXPECT_EQ(code.back(), ';');
-}
-
 // -----------------------------------------------------------------------------
 // Polygon2D Tests
 // -----------------------------------------------------------------------------
 
 TEST(Polygon2DTest, EmptyPolygon) {
     Polygon2D polygon({}, {});
-    EXPECT_EQ(polygon.generateCode(), "polygon($fn = 0, $fa = 12, $fs = 2, points = [], path = []);");
+    EXPECT_EQ(polygon.generateCode(), "polygon($fn = 0, $fa = 12, $fs = 2, points = [], paths = [], convexity = 1);");
 }
 
 TEST(Polygon2DTest, SimplePointsNoPaths) {
     std::vector<Point2D> points = {{0,0}, {10,0}, {10,10}};
     Polygon2D polygon(points, {});
-    EXPECT_EQ(polygon.generateCode(), "polygon($fn = 0, $fa = 12, $fs = 2, points = [[0,0],[10,0],[10,10]], path = []);");
-}
-
-TEST(Polygon2DTest, TrailingSemicolonPolygon) {
-    std::vector<Point2D> points = {{0,0}};
-    Polygon2D polygon(points, {});
-    std::string code = polygon.generateCode();
-    ASSERT_FALSE(code.empty());
-    EXPECT_EQ(code.back(), ';');
+    EXPECT_EQ(polygon.generateCode(), "polygon($fn = 0, $fa = 12, $fs = 2, points = [[0,0],[10,0],[10,10]], paths = [], convexity = 1);");
 }
 
 // -----------------------------------------------------------------------------
@@ -266,13 +244,85 @@ TEST(Text2DTest, CustomTextParameters) {
     EXPECT_EQ(text.generateCode(), "text($fn = 0, $fa = 12, $fs = 2, text = Test, font = Arial, size = 12, halign = center, valign = center, spacing = 2, direction = rtl, language = es, script = arabic);");
 }
 
-TEST(Text2DTest, TrailingSemicolonText) {
-    Text2D text("Simple");
-    std::string code = text.generateCode();
-    ASSERT_FALSE(code.empty());
-    EXPECT_EQ(code.back(), ';');
+// -----------------------------------------------------------------------------
+// Scene Tests
+// -----------------------------------------------------------------------------
+
+TEST(SceneTest, BasicScene) {
+  Circle2D circle(8);
+  Sphere3D sphere(3);
+
+  Scene scene;
+  scene.append(circle);
+  scene.append(sphere);
+
+  EXPECT_EQ(scene.generateCode(),
+    "circle($fn = 0, $fa = 12, $fs = 2, r = 8);\n"
+    "sphere($fn = 0, $fa = 12, $fs = 2, 3);"
+  );
 }
 
+// Test with an empty scene to ensure no code is generated.
+TEST(SceneTest, EmptyScene) {
+    Scene scene;
+    EXPECT_EQ(scene.generateCode(), "");
+}
+
+// Test with a single object to ensure its code is generated correctly.
+TEST(SceneTest, SingleObject) {
+    Scene scene;
+    Square2D square(10);
+    scene.append(square);
+    EXPECT_EQ(scene.generateCode(), "square($fn = 0, $fa = 12, $fs = 2, width = 10, height = 10, center = false);");
+}
+
+// Test with multiple objects of the same type.
+TEST(SceneTest, MultipleSameObjects) {
+    Scene scene;
+    Circle2D circle1(5);
+    Circle2D circle2(15);
+    scene.append(circle1);
+    scene.append(circle2);
+    EXPECT_EQ(scene.generateCode(), "circle($fn = 0, $fa = 12, $fs = 2, r = 5);\ncircle($fn = 0, $fa = 12, $fs = 2, r = 15);");
+}
+
+// Test with objects that have custom parameters.
+TEST(SceneTest, CustomParameters) {
+    Scene scene;
+    Square2D large_square(20, 20, true);
+    Sphere3D small_sphere(2.5f);
+    small_sphere.fa = 5;
+    small_sphere.fn = 30;
+    
+    scene.append(large_square);
+    scene.append(small_sphere);
+    
+    EXPECT_EQ(scene.generateCode(), 
+      "square($fn = 0, $fa = 12, $fs = 2, width = 20, height = 20, center = true);\n"
+      "sphere($fn = 30, $fa = 5, $fs = 2, 2.5);"
+    );
+}
+
+// Test with a mix of 2D and 3D objects, and a custom number of fragments.
+TEST(SceneTest, MixedObjectsAndCustomFn) {
+    Scene scene;
+    Circle2D custom_circle(10);
+    custom_circle.fn = 60;
+    
+    Sphere3D sphere(5);
+    
+    Polygon2D triangle({{0,0},{1,0},{0.5,1}}, {});
+    
+    scene.append(custom_circle);
+    scene.append(sphere);
+    scene.append(triangle);
+
+    EXPECT_EQ(scene.generateCode(),
+      "circle($fn = 60, $fa = 12, $fs = 2, r = 10);\n"
+      "sphere($fn = 0, $fa = 12, $fs = 2, 5);\n"
+      "polygon($fn = 0, $fa = 12, $fs = 2, points = [[0,0],[1,0],[0.5,1]], paths = [], convexity = 1);"
+    );
+}
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

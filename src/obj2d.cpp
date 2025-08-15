@@ -1,14 +1,14 @@
 #include "scad/obj2d.h"
 
-std::string Circle2D::generateCode(){
+std::string Circle2D::generateCode() {
   return std::format("circle($fn = {}, $fa = {}, $fs = {}, r = {});", fn, fa, fs,
       radius);
 }
-std::string Square2D::generateCode(){
+std::string Square2D::generateCode() {
   return std::format("square($fn = {}, $fa = {}, $fs = {}, width = {}, height = {}, center = {});", fn, fa, fs,
       width, height, center);
 }
-std::string Polygon2D::generateCode(){
+std::string Polygon2D::generateCode() {
   std::string pointsFormat = "[";
   for (unsigned int i = 0; i < points.size(); ++i){
     pointsFormat += std::format("[{},{}]", points[i].x, points[i].y);
@@ -34,11 +34,11 @@ std::string Polygon2D::generateCode(){
   }
   pathsFormat += "]";
 
-  return std::format("polygon($fn = {}, $fa = {}, $fs = {}, points = {}, path = {});", fn, fa, fs,
-      pointsFormat, pathsFormat);
+  return std::format("polygon($fn = {}, $fa = {}, $fs = {}, points = {}, paths = {}, convexity = {});", fn, fa, fs,
+      pointsFormat, pathsFormat, convexity);
 }
 
-std::string Text2D::generateCode(){
+std::string Text2D::generateCode() {
   return std::format("text($fn = {}, $fa = {}, $fs = {}, "
       "text = {}, font = {}, size = {}, "
       "halign = {}, valign = {}, "
